@@ -1,5 +1,8 @@
 # install
 
+Screenshot of the script running
+[![Screenshot](https://raw.githubusercontent.com/plebeiusgaragicus/paywall/master/screenshot.png)]
+
 ```sh
 python3 -m venv venv
 source venv/bin/activate
