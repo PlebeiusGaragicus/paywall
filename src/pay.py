@@ -3,7 +3,6 @@ import requests
 import logging
 import json
 import qrcode
-import dotenv
 
 def get_access_token():
 
@@ -11,7 +10,7 @@ def get_access_token():
 
     payload = \
         "{\n    \"username\": \"" + \
-        os.getenv('USEREMAIL') + \
+        os.getenv('USERNAME') + \
         "\",\n    \"pass_phrase\": \"" + \
         os.getenv('PASSWORD') + \
         "\",\n    \"type\": \"wallet_owner\"\n}"
@@ -59,16 +58,13 @@ def generate_qr_code(data, filename):
 
 
 def do_invoice(amount_sats, memo) -> str:
-    logging.basicConfig(level=logging.DEBUG)
-    dotenv.load_dotenv()
-
     at = get_access_token()
 
     invoice = create_invoice(amount_sats, memo, auth_token=at['access_token'])
 
     if invoice is None:
         logging.error("Error creating invoice")
-        exit(1)
+        return None
     
     generate_qr_code(invoice['payment_request'], f"./invoice_qr/invoice_{invoice['payment_hash']}.png")
 
