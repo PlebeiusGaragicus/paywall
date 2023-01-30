@@ -41,7 +41,7 @@ def main():
     pywebio.output.put_markdown("---")
 
     pywebio.pin.put_input("sats", label="sats", type="number", value="100")
-    pywebio.pin.put_input("memo", label="memo", type="text", value="text invoice")
+    pywebio.pin.put_input("memo", label="memo", type="text", value="test invoice")
 
     pywebio.output.put_button(label="Create Invoice", onclick=click)
 
