@@ -4,4 +4,4 @@ venv/
 __pycache__/
 
 dump/
-invoice_qr/
+*.png

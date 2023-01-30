@@ -4,6 +4,7 @@ import logging
 import json
 import qrcode
 
+
 def get_access_token(username, password):
     url = "https://api.rapaygo.com/v1/auth/access_token"
 
@@ -16,6 +17,8 @@ def get_access_token(username, password):
         return None
 
     return json.loads(response.text)
+
+
 
 def create_invoice(amount_sats, memo, auth_token):
     url = "https://api.rapaygo.com/v1/invoice_payment/ln/invoice"
@@ -36,6 +39,7 @@ def create_invoice(amount_sats, memo, auth_token):
     #     return None
 
     return json.loads(response.text)
+
 
 
 def generate_qr_code(data, filename):

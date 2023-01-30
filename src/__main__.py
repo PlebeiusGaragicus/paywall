@@ -9,7 +9,7 @@ from . import pay
 ### CONFIG ###
 DEBUG = True
 
-# callback
+
 def click():
     username = pywebio.pin.pin["username"]
     password = pywebio.pin.pin["password"]
@@ -25,6 +25,7 @@ def click():
     img = open(os.getcwd() + "/invoice_qr" + f"/invoice_{pay_hash}.png", 'rb').read()
     pywebio.output.put_image(img)
     pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
+
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
