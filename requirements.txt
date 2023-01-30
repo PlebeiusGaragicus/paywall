@@ -1,0 +1,4 @@
+pywebio
+python-dotenv
+requests
+qrcode[pil]
