@@ -10,7 +10,7 @@ chmod +x run
 
 # create .env file
 ```sh
-USEREMAIL = "..."
+USERNAME = "..."
 PASSWORD = "..."
 ```
 
