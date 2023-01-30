@@ -4,17 +4,10 @@ import logging
 import json
 import qrcode
 
-def get_access_token():
-
+def get_access_token(username, password):
     url = "https://api.rapaygo.com/v1/auth/access_token"
 
-    payload = \
-        "{\n    \"username\": \"" + \
-        os.getenv('USERNAME') + \
-        "\",\n    \"pass_phrase\": \"" + \
-        os.getenv('PASSWORD') + \
-        "\",\n    \"type\": \"wallet_owner\"\n}"
-
+    payload = "{\n    \"username\": \"" + username + "\",\n    \"pass_phrase\": \"" + password + "\",\n    \"type\": \"wallet_owner\"\n}"
     headers = {}
     response = requests.request("POST", url, headers=headers, data=payload)
 
@@ -57,8 +50,8 @@ def generate_qr_code(data, filename):
 
 
 
-def do_invoice(amount_sats, memo) -> str:
-    at = get_access_token()
+def do_invoice(amount_sats, memo, username, password) -> str:
+    at = get_access_token(username, password)
 
     invoice = create_invoice(amount_sats, memo, auth_token=at['access_token'])
 

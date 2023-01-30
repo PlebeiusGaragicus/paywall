@@ -13,15 +13,14 @@ DEBUG = True
 def click():
     username = pywebio.pin.pin["username"]
     password = pywebio.pin.pin["password"]
-
-    if None in [username, password]:
+    if "" in [username, password]:
         pywebio.output.toast("Please enter username and password")
         return
 
     amount = pywebio.pin.pin["sats"]
     memo = pywebio.pin.pin['memo']
 
-    pay_hash = pay.do_invoice(amount, memo)
+    pay_hash = pay.do_invoice(amount, memo, username, password)
 
     img = open(os.getcwd() + "/invoice_qr" + f"/invoice_{pay_hash}.png", 'rb').read()
     pywebio.output.put_image(img)
