@@ -1,16 +1,37 @@
-import os
 import requests
 import logging
 import json
-import qrcode
+
+# ...
+#pywebio.pin.put_input("sats", label="sats", type="number", value="100")
+#pywebio.pin.put_input("memo", label="memo", type="text", value="test invoice")
+#pywebio.output.put_button(label="Create Invoice", onclick=click)
+# ...
+
+
+
+def click():
+    amount = pywebio.pin.pin["sats"]
+    memo = pywebio.pin.pin['memo']
+
+    pay_hash = pay.do_invoice(amount, memo)
+
+    img = open(os.getcwd() + "/invoice_qr" + f"/{pay_hash}.png", 'rb').read()
+    pywebio.output.put_image(img)
+    pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
 
 def get_access_token(username, password):
     url = "https://api.rapaygo.com/v1/auth/access_token"
 
-    payload = "{\n    \"username\": \"" + username + "\",\n    \"pass_phrase\": \"" + password + "\",\n    \"type\": \"wallet_owner\"\n}"
+    payload = {
+        "username": username,
+         "pass_phrase": password,
+         "type": "wallet_owner"
+    }
+
     headers = {}
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
 
     if response.status_code != 200:
         logging.error("Error getting access token: %s", response.text)
@@ -42,15 +63,6 @@ def create_invoice(amount_sats, memo, auth_token):
 
 
 
-def generate_qr_code(data, filename):
-    qr = qrcode.QRCode(version = 1,
-                       box_size = 10,
-                       border = 5)
-    qr.add_data(data)
-    qr.make(fit = True)
-    img = qr.make_image(fill_color = 'red',
-                        back_color = 'white')
-    img.save(filename)
 
 
 
@@ -63,6 +75,6 @@ def do_invoice(amount_sats, memo, username, password) -> str:
         logging.error("Error creating invoice")
         return None
     
-    generate_qr_code(invoice['payment_request'], f"./invoice_qr/invoice_{invoice['payment_hash']}.png")
+    generate_qr_code(invoice['payment_request'], f"./invoice_qr/{invoice['payment_hash']}.png")
 
     return invoice['payment_hash']
