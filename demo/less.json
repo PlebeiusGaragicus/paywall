@@ -1,0 +1,17 @@
+{
+    "amount": 100,
+    "checking_id": "5cc270e3d2daccd00deb09f038b3ec950e117ad87566a1d9d5c3f896adfd4630",
+    "created_at": "2023-01-30 23:51:23.425868",
+    "created_at_ts": 1675122683.425868,
+    "fiat_amount": 0.0227967175,
+    "fiat_i8n_currency": "USD",
+    "memo": "5faa3 POS payment. test invoice 5faa3",
+    "payment_hash": "5cc270e3d2daccd00deb09f038b3ec950e117ad87566a1d9d5c3f896adfd4630",
+    "payment_request": "lnbc1u1p3as4lmpp5tnp8pc7jmtxdqr0tp8cr3vlvj58pz7kcw4n2rkw4c0ufdt0agccqhp5tmnv3freush0qgfan08sufl8hm4k22c55uhp0ypv60jvf50l527qcqzpgxqyz5vqsp5uexf8tjw4je4au55frkfmklh3awgjmerfuqpq2eyup5lcqprhc5s9qyyssqjpr4du7k4k5djddxh5eu6lllvs3xla8qtylrn4vvtdulu26882m866tmgmznsvdczqyhkepdnkd6eq9x7l00jerufnsfuau7kg4uv8qq6gzs4f",
+    "pending": False,
+    "pending_int": 0,
+    "pos_id": "5faa3",
+    "status": "COMPLETED",
+    "updated_at": "2023-01-30 23:56:29.131226",
+    "webhook_status": "pending",
+}

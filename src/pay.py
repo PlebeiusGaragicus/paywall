@@ -1,4 +1,3 @@
-import os
 import requests
 import logging
 import json
@@ -8,9 +7,14 @@ import qrcode
 def get_access_token(username, password):
     url = "https://api.rapaygo.com/v1/auth/access_token"
 
-    payload = "{\n    \"username\": \"" + username + "\",\n    \"pass_phrase\": \"" + password + "\",\n    \"type\": \"wallet_owner\"\n}"
+    payload = {
+        "username": username,
+         "pass_phrase": password,
+         "type": "wallet_owner"
+    }
+
     headers = {}
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
 
     if response.status_code != 200:
         logging.error("Error getting access token: %s", response.text)
@@ -63,6 +67,6 @@ def do_invoice(amount_sats, memo, username, password) -> str:
         logging.error("Error creating invoice")
         return None
     
-    generate_qr_code(invoice['payment_request'], f"./invoice_qr/invoice_{invoice['payment_hash']}.png")
+    generate_qr_code(invoice['payment_request'], f"./invoice_qr/{invoice['payment_hash']}.png")
 
     return invoice['payment_hash']
