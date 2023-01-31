@@ -20,7 +20,7 @@ class rapaygoPaymentTimeout(Exception):
 
 
 
-class rapaygoSingletonHanlder:
+class rapaygoSingleton:
     def __init__(self, api_key, api_secret):
         logging.debug("Initializing rapaygoHandler")
         logging.debug("api_key: %s", api_key)
@@ -90,7 +90,11 @@ class rapaygoSingletonHanlder:
 
 
     ################################################
-    def block_for_payment_timeout(self, timeout=60):
+    def block_for_payment_timeout(self, timeout=300):
+        """ TODO: I should incorporate a count-down timer here, so that the user can see how much time is left before the payment expires.
+            ... also.. what if the payment goes thru seconds after it "expires"?  They basically paid for nothing.
+        """
+
         payment_status_url = f"https://api.rapaygo.com/v1/invoice_payment/{self.payment_hash}"
 
         start_time = time.time()
@@ -115,6 +119,11 @@ class rapaygoSingletonHanlder:
 
     ################################################
     def block_for_payment(self):
+        """
+            Return True if payment is confirmed
+                otherwise blocks
+        """
+
         payment_status_url = f"https://api.rapaygo.com/v1/invoice_payment/{self.payment_hash}"
 
         while True:

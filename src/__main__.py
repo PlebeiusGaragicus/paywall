@@ -4,7 +4,7 @@ import logging
 import dotenv
 import pywebio
 
-from .rapaygoHandler import rapaygoSingletonHanlder, rapaygoException, rapaygoPaymentTimeout
+from .rapaygoSingleton import rapaygoSingleton, rapaygoException, rapaygoPaymentTimeout
 
 
 ### GLOBALS ###
