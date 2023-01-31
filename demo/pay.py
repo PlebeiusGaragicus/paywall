@@ -1,7 +1,24 @@
 import requests
 import logging
 import json
-import qrcode
+
+# ...
+#pywebio.pin.put_input("sats", label="sats", type="number", value="100")
+#pywebio.pin.put_input("memo", label="memo", type="text", value="test invoice")
+#pywebio.output.put_button(label="Create Invoice", onclick=click)
+# ...
+
+
+
+def click():
+    amount = pywebio.pin.pin["sats"]
+    memo = pywebio.pin.pin['memo']
+
+    pay_hash = pay.do_invoice(amount, memo)
+
+    img = open(os.getcwd() + "/invoice_qr" + f"/{pay_hash}.png", 'rb').read()
+    pywebio.output.put_image(img)
+    pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
 
 def get_access_token(username, password):
@@ -46,15 +63,6 @@ def create_invoice(amount_sats, memo, auth_token):
 
 
 
-def generate_qr_code(data, filename):
-    qr = qrcode.QRCode(version = 1,
-                       box_size = 10,
-                       border = 5)
-    qr.add_data(data)
-    qr.make(fit = True)
-    img = qr.make_image(fill_color = 'red',
-                        back_color = 'white')
-    img.save(filename)
 
 
 
