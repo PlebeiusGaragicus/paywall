@@ -26,8 +26,13 @@ def create_invoice_extralives():
     pywebio.output.put_image( rapaygo.generate_qr_code(box_size=4, border=0) )
     pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
+    with pywebio.output.use_scope("invoice"):
+        pywebio.output.put_markdown("# Waiting for payment...")
+
     with pywebio.output.put_loading(color='primary'):
         rapaygo.block_for_payment()
+
+    with pywebio.output.use_scope("invoice"):
         pywebio.output.put_markdown("# WE GOT PAID!")
 
 
@@ -36,7 +41,7 @@ def create_invoice_extralives():
 def main():
     pywebio.output.put_html("<h1>Invoice Creator</h1>")
 
-    pywebio.output.put_button(label="Extra Lives <3", onclick=create_invoice_extralives)
+    pywebio.output.put_button(label="Create Invoice", onclick=create_invoice_extralives)
 
 
 
