@@ -36,7 +36,7 @@ def create_invoice_extralives():
         pywebio.output.put_markdown("# PAYMENT RECIEVED!")
 
 
-    os.popen("python3 play.py")
+    os.popen("python3 game.py")
 
     pywebio.output.clear("invoice")
 

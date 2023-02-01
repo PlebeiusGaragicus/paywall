@@ -40,10 +40,10 @@ object_rect = pygame.Rect(object_x, object_y, object_image.get_width(), object_i
 score = 5
 
 # Load player image
-player_image = pygame.image.load("./assets/char2.png")
+player_image = pygame.image.load("./assets/chuckchar.png")
 
 # make character smaller
-player_image = pygame.transform.scale(player_image, (int(player_image.get_width()/2), int(player_image.get_height()/2)))
+# player_image = pygame.transform.scale(player_image, (int(player_image.get_width()/2), int(player_image.get_height()/2)))
 
 # Set player position
 player_x = screen_width/2 - player_image.get_width()/2
@@ -147,13 +147,25 @@ while running:
     # Update screen
     pygame.display.update()
 
-chuck = pygame.image.load("./assets/chuck.jpg")
+chuck = pygame.image.load("./assets/chuckdagger.png")
 
 # resize chuck to fit on screen
 chuck = pygame.transform.scale(chuck, (screen_width, screen_height))
 
-screen.fill((0, 0, 0))
+# screen.fill((0, 0, 0))
 screen.blit(chuck, [0, 0])
+
+text_surface = font.render("yOu KiLLeD ChUcKy !!!".format(score), True, (255, 200, 150), (0, 0, 0))
+
+# Get the dimensions of the text surface
+text_width, text_height = text_surface.get_size()
+
+# Define the position to display the text
+text_x = screen_width/2 - text_width/2
+text_y = screen_height/2 - text_height/2
+
+# Draw the text surface on the screen
+screen.blit(text_surface, (text_x, text_y))
 
 pygame.display.update()
 

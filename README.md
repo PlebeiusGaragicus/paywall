@@ -10,15 +10,11 @@ chmod +x run
 
 # create .env file
 ```sh
-USERNAME = "..."
-PASSWORD = "..."
+API_KEY="..."
+API_SECRET="..."
 ```
 
 # run
 ```sh
 ./run
 ```
-
-# screenshot
-
-[![Screenshot](https://github.com/PlebeiusGaragicus/paywall/raw/main/screenshot.jpg)]
