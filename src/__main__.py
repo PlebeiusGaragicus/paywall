@@ -23,14 +23,8 @@ def create_invoice_extralives():
     global rapaygo
     rapaygo.create_invoice(amount, memo)
 
-    pywebio.output.put_image( rapaygo.generate_qr_code() )
+    pywebio.output.put_image( rapaygo.generate_qr_code(box_size=4, border=0) )
     pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
-
-    # try:
-    #     if rapaygo.block_for_payment_timeout() == True:
-    #         pywebio.output.put_text("Payment Received!")
-    # except rapaygoPaymentTimeout:
-    #     pywebio.output.put_text("NO PAYMENT!")
 
     with pywebio.output.put_loading(color='primary'):
         rapaygo.block_for_payment()
