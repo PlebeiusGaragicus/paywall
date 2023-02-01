@@ -20,7 +20,7 @@ class rapaygoPaymentTimeout(Exception):
 
 
 
-class rapaygoSingletonHanlder:
+class rapaygoSingleton:
     def __init__(self, api_key, api_secret):
         logging.debug("Initializing rapaygoHandler")
         logging.debug("api_key: %s", api_key)
@@ -48,8 +48,8 @@ class rapaygoSingletonHanlder:
 
         return json.loads(response.text)['access_token']
 
-    def generate_qr_code(self):
-        qr = qrcode.QRCode(version=1, box_size=6, border=1)
+    def generate_qr_code(self, box_size=6, border=1):
+        qr = qrcode.QRCode(version=1, box_size=box_size, border=border)
         qr.add_data(self.invoice['payment_request'])
         qr.make(fit=True)
 
@@ -85,12 +85,22 @@ class rapaygoSingletonHanlder:
 
 
     ################################################
-    # def wait_for_payment(self):
-    #     
+    def block_for_payment_timeout(self, timeout=300):
+        """ TODO: I should incorporate a count-down timer here, so that the user can see how much time is left before the payment expires.
+            ... also.. what if the payment goes thru seconds after it "expires"?  They basically paid for nothing.
 
+            raises rapaygoPaymentTimeout if payment is not confirmed within ```timeout``` seconds
 
-    ################################################
-    def block_for_payment_timeout(self, timeout=60):
+            example:
+            ```
+            try:
+                if rapaygo.block_for_payment_timeout() == True:
+                    pywebio.output.put_text("Payment Received!")
+            except rapaygoPaymentTimeout:
+                pywebio.output.put_text("NO PAYMENT!")
+            ```
+        """
+
         payment_status_url = f"https://api.rapaygo.com/v1/invoice_payment/{self.payment_hash}"
 
         start_time = time.time()
@@ -115,6 +125,11 @@ class rapaygoSingletonHanlder:
 
     ################################################
     def block_for_payment(self):
+        """
+            Return True if payment is confirmed
+                otherwise blocks
+        """
+
         payment_status_url = f"https://api.rapaygo.com/v1/invoice_payment/{self.payment_hash}"
 
         while True:

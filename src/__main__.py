@@ -4,11 +4,10 @@ import logging
 import dotenv
 import pywebio
 
-from .rapaygoHandler import rapaygoSingletonHanlder, rapaygoException, rapaygoPaymentTimeout
-
+from .rapaygoSingleton import rapaygoSingleton, rapaygoException, rapaygoPaymentTimeout
 
 ### GLOBALS ###
-rapaygo: rapaygoSingletonHanlder = None
+rapaygo: rapaygoSingleton = None
 
 
 ### CONFIG ###
@@ -18,22 +17,29 @@ DEBUG = False
 
 def create_invoice_extralives():
     amount = 10
-    memo = "Extra Lives <3"
+    memo = "one play"
 
     global rapaygo
     rapaygo.create_invoice(amount, memo)
 
-    pywebio.output.put_image( rapaygo.generate_qr_code() )
+
+    with pywebio.output.use_scope("invoice", clear=True):
+        pywebio.output.put_image( rapaygo.generate_qr_code(box_size=4, border=0) )
+        pywebio.output.put_markdown("# Waiting for payment...")
+
     pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
-    # try:
-    #     if rapaygo.block_for_payment_timeout() == True:
-    #         pywebio.output.put_text("Payment Received!")
-    # except rapaygoPaymentTimeout:
-    #     pywebio.output.put_text("NO PAYMENT!")
+    with pywebio.output.put_loading(color='primary'):
+        rapaygo.block_for_payment()
 
-    rapaygo.block_for_payment()
-    pywebio.output.put_markdown("# WE GOT PAID!")
+    with pywebio.output.use_scope("invoice", clear=True):
+        pywebio.output.put_markdown("# PAYMENT RECIEVED!")
+
+
+    os.popen("python3 play.py")
+
+    pywebio.output.clear("invoice")
+
 
 
 
@@ -41,7 +47,7 @@ def create_invoice_extralives():
 def main():
     pywebio.output.put_html("<h1>Invoice Creator</h1>")
 
-    pywebio.output.put_button(label="Extra Lives <3", onclick=create_invoice_extralives)
+    pywebio.output.put_button(label="Create Invoice", onclick=create_invoice_extralives)
 
 
 
@@ -62,7 +68,7 @@ if __name__ == "__main__":
 
     # global rapaygo
     try:
-        rapaygo = rapaygoSingletonHanlder(key, secret)
+        rapaygo = rapaygoSingleton(key, secret)
     except rapaygoException as e:
         logging.error(e.message)
         exit(1)
