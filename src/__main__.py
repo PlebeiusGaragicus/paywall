@@ -6,7 +6,6 @@ import pywebio
 
 from .rapaygoSingleton import rapaygoSingleton, rapaygoException, rapaygoPaymentTimeout
 
-
 ### GLOBALS ###
 rapaygo: rapaygoSingleton = None
 
@@ -18,22 +17,29 @@ DEBUG = False
 
 def create_invoice_extralives():
     amount = 10
-    memo = "Extra Lives <3"
+    memo = "one play"
 
     global rapaygo
     rapaygo.create_invoice(amount, memo)
 
-    pywebio.output.put_image( rapaygo.generate_qr_code(box_size=4, border=0) )
-    pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
-    with pywebio.output.use_scope("invoice"):
+    with pywebio.output.use_scope("invoice", clear=True):
+        pywebio.output.put_image( rapaygo.generate_qr_code(box_size=4, border=0) )
         pywebio.output.put_markdown("# Waiting for payment...")
+
+    pywebio.output.scroll_to(position=pywebio.output.Position.BOTTOM)
 
     with pywebio.output.put_loading(color='primary'):
         rapaygo.block_for_payment()
 
-    with pywebio.output.use_scope("invoice"):
-        pywebio.output.put_markdown("# WE GOT PAID!")
+    with pywebio.output.use_scope("invoice", clear=True):
+        pywebio.output.put_markdown("# PAYMENT RECIEVED!")
+
+
+    os.popen("python3 play.py")
+
+    pywebio.output.clear("invoice")
+
 
 
 
