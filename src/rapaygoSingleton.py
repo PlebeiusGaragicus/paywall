@@ -85,11 +85,6 @@ class rapaygoSingleton:
 
 
     ################################################
-    # def wait_for_payment(self):
-    #     
-
-
-    ################################################
     def block_for_payment_timeout(self, timeout=300):
         """ TODO: I should incorporate a count-down timer here, so that the user can see how much time is left before the payment expires.
             ... also.. what if the payment goes thru seconds after it "expires"?  They basically paid for nothing.

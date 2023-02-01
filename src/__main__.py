@@ -8,7 +8,7 @@ from .rapaygoSingleton import rapaygoSingleton, rapaygoException, rapaygoPayment
 
 
 ### GLOBALS ###
-rapaygo: rapaygoSingletonHanlder = None
+rapaygo: rapaygoSingleton = None
 
 
 ### CONFIG ###
@@ -32,8 +32,9 @@ def create_invoice_extralives():
     # except rapaygoPaymentTimeout:
     #     pywebio.output.put_text("NO PAYMENT!")
 
-    rapaygo.block_for_payment()
-    pywebio.output.put_markdown("# WE GOT PAID!")
+    with pywebio.output.put_loading(color='primary'):
+        rapaygo.block_for_payment()
+        pywebio.output.put_markdown("# WE GOT PAID!")
 
 
 
@@ -62,7 +63,7 @@ if __name__ == "__main__":
 
     # global rapaygo
     try:
-        rapaygo = rapaygoSingletonHanlder(key, secret)
+        rapaygo = rapaygoSingleton(key, secret)
     except rapaygoException as e:
         logging.error(e.message)
         exit(1)
