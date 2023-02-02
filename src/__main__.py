@@ -4,13 +4,13 @@ import threading
 import time
 from enum import Enum, auto
 
+from PIL import Image
 import dotenv
 import pywebio
 
 from . import config
 
 from .rapaygoSingleton import rapaygoSingleton, rapaygoException, rapaygoPaymentCancelled
-
 
 """ ### SCOPES ###
 - main
@@ -102,11 +102,25 @@ def create_invoice(type: InvoiceType):
     show_create_invoice_button()
 
 
-
+@pywebio.output.use_scope("create_invoice")
 def show_create_invoice_button():
-    with pywebio.output.use_scope("create_invoice"):
+
+    ci = Image.open( os.getcwd() + "/assets/scrn/chucky.png" )
+    ci = ci.resize((300, 300))
+
+    pi = Image.open( os.getcwd() + "/assets/scrn/pong.png" )
+    pi = pi.resize((300, 300))
+
+    pywebio.output.put_table([[
+        pywebio.output.put_column([
+        pywebio.output.put_image(ci, format='png'),
         pywebio.output.put_button(label="PLAY Chucky", onclick=lambda: create_invoice(InvoiceType.CHUCKY))
+        ]),
+        pywebio.output.put_column([
+        pywebio.output.put_image(pi, format='png'),
         pywebio.output.put_button(label="PLAY Pong", onclick=lambda: create_invoice(InvoiceType.PONG))
+        ])
+    ]])
 
 
 def main():
