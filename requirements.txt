@@ -4,3 +4,4 @@ requests
 qrcode[pil]
 
 pygame
+arcade
